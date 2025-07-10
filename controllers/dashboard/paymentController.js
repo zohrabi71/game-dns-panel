@@ -12,7 +12,7 @@ class paymentController extends Controller {
     }
 
     async pay(req, res, next) {
-        // if (this.hasCredit(req.user.credit)) {
+        // if (this.hasCredit(req.user.subscriptionExpiration)) {
         //     req.flash('errors', 'اعتبار شما هنوز به پایان نرسیده است.')
         //     return res.redirect('/dashboard');
         // }
@@ -22,7 +22,7 @@ class paymentController extends Controller {
             res.json('چنین پلنی وجود ندارد');
         }
 
-        // if (req.user.checkpayCash(plan.id)) {
+        // if (req.user.checkpayCash(plan._id)) {
         //     res.json('این پلن را شما قبلا خریداری نموده اید')
         // }
 
@@ -39,9 +39,9 @@ class paymentController extends Controller {
 
             if (response.data.Status === 100) {
                 const newPayment = new this.Payment({
-                    user: req.user.id,
+                    user: req.user._id,
                     resnumber: response.data.Authority,
-                    plan: plan.id,
+                    plan: plan._id,
                     amount: plan.price,
                 })
                 await newPayment.save();
@@ -51,12 +51,16 @@ class paymentController extends Controller {
             }
         } catch (err) {
             console.log(err.message)
-            next(err)
+
+            req.flash('errors', { param: 'server', msg: 'خطایی رخ داده!'});
+
+            return res.redirect('/dashboard/payment')
         }
     }
 
     async payCallback(req, res, next) {
         try {
+            console.log(1)
             // if (req.query.Status && req.query.Status !== 'OK') {
             //     return res.render('payment/paycallback', { msg: 'تراکنش ناموفق' })
             // }
@@ -80,13 +84,14 @@ class paymentController extends Controller {
                 const plan = await this.Plan.findById(payment.plan)
                 const now = new Date().getTime()
 
-                user.credit = now + (1000 * 60 * 60 * 24 * plan.credit)
+                user.subscriptionExpiration = now + (1000 * 60 * 60 * 24 * plan.credit)
+                user.payCash = plan._id
                 payment.status = 'completed'
 
                 await user.save()
                 await payment.save()
 
-                res.render('dashboard/payment/paycallback', {msg: 'حساب کاربری شما با موفقیت شارژ شد.'});
+                res.render('dashboard/payment/paycallback', { msg: 'حساب کاربری شما با موفقیت شارژ شد.' });
             } else {
                 payment.status = 'failed'
                 await payment.save()
@@ -163,10 +168,10 @@ class paymentController extends Controller {
             res.status(200).render('dashboard/payment/list', { payments });
         } catch (err) {
             console.log(err);
-            // Render the view with an error message
+
             res.status(500).render('dashboard/payment/list', {
-                payments: [], // Pass an empty array for payments
-                msg: 'خطا در بازیابی اطلاعات: ' + err.message // Pass the error message to the EJS template
+                payments: [],
+                msg: 'خطا در بازیابی اطلاعات: ' + err.message
             });
         }
     }

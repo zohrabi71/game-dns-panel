@@ -1,116 +1,116 @@
 <%- include('../header') -%>
 
-<h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">ویرایش پلن</h2>
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">ویرایش پلن</h2>
 
-<% let serverError='' ; let titleError='' ; let discountedPriceError='' ; let priceError='' ; let creditError='' ;
-let statusError='' ; errors.forEach(err=> {
-if (err.param === 'server') {
-serverError = err.msg;
-}
+    <% let serverError='' ; let titleError='' ; let discountedPriceError='' ; let priceError='' ; let creditError='' ;
+        let statusError='' ; errors.forEach(err=> {
+        if (err.param === 'server') {
+        serverError = err.msg;
+        }
 
-if (err.param === 'title') {
-titleError = err.msg;
-}
+        if (err.param === 'title') {
+        titleError = err.msg;
+        }
 
-if (err.param === 'price') {
-priceError = err.msg;
-}
+        if (err.param === 'price') {
+        priceError = err.msg;
+        }
 
-if (err.param === 'discountedPrice') {
-discountedPriceError = err.msg;
-}
+        if (err.param === 'discountedPrice') {
+        discountedPriceError = err.msg;
+        }
 
-if (err.param === 'credit') {
-creditError = err.msg;
-}
+        if (err.param === 'credit') {
+        creditError = err.msg;
+        }
 
-if (err.param === 'status') {
-statusError = err.msg;
-}
-})
-%>
+        if (err.param === 'status') {
+        statusError = err.msg;
+        }
+        })
+        %>
 
-<p class="mb-4 text-xs text-red-600 dark:text-red-400 mt-1">
-    <%= msg %>
-    <%= serverError %>
-</p>
+        <p class="mb-4 text-xs text-red-600 dark:text-red-400 mt-1">
+            <%= msg %>
+                <%= serverError %>
+        </p>
 
-<form action="/dashboard/plan/<%= plan.id %>/edit?_method=PUT" method="POST">
-    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <label class="block text-sm">
-            <span class="text-gray-700 dark:text-gray-400">عنوان</span>
-            <input name="title" value="<%= plan.title %>"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-            <% if (titleError) { %>
-                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
-                    <%= titleError %>
-                </p>
-                <% } %>
-        </label>
-
-        <label class="block mt-4 text-sm">
-            <span class="text-gray-700 dark:text-gray-400">مدت</span>
-            <input name="credit" type="number" value="<%= plan.credit %>"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-            <% if (creditError) { %>
-                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
-                    <%= creditError %>
-                </p>
-                <% } %>
-        </label>
-
-        <label class="block mt-4 text-sm">
-            <span class="text-gray-700 dark:text-gray-400">قیمت</span>
-            <input name="price" value="<%= plan.price %>"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-            <% if (priceError) { %>
-                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
-                    <%= priceError %>
-                </p>
-                <% } %>
-        </label>
-
-        <label class="block mt-4 text-sm">
-            <span class="text-gray-700 dark:text-gray-400">قیمت با تخفیف</span>
-            <input name="discountedPrice" value="<%= plan.discountedPrice %>"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-            <% if (discountedPriceError) { %>
-                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
-                    <%= discountedPriceError %>
-                </p>
-                <% } %>
-        </label>
-
-        <div class="mt-4 text-sm">
-            <span class="text-gray-700 dark:text-gray-400">وضعیت</span>
-            <div class="mt-2">
-                <label class="inline-flex items-center text-gray-600 dark:text-gray-400">
-                    <input name="status" value="active" type="radio"
-                        class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                        <%=plan.status==='active' ? 'checked' : '' %> >
-                    <span class="ms-2">فعال</span>
+        <form action="/dashboard/plan/<%= plan._id %>/edit?_method=PUT" method="POST">
+            <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">عنوان</span>
+                    <input name="title" value="<%= plan.title %>"
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                    <% if (titleError) { %>
+                        <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                            <%= titleError %>
+                        </p>
+                        <% } %>
                 </label>
-                <label class="inline-flex items-center ms-6 text-gray-600 dark:text-gray-400">
-                    <input name="status" value="disactive" type="radio"
-                        class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                        <%=plan.status==='disactive' ? 'checked' : '' %> >
-                    <span class="ms-2">غیرفعال</span>
+
+                <label class="block mt-4 text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">مدت</span>
+                    <input name="credit" type="number" value="<%= plan.credit %>"
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                    <% if (creditError) { %>
+                        <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                            <%= creditError %>
+                        </p>
+                        <% } %>
                 </label>
+
+                <label class="block mt-4 text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">قیمت</span>
+                    <input name="price" value="<%= plan.price %>"
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                    <% if (priceError) { %>
+                        <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                            <%= priceError %>
+                        </p>
+                        <% } %>
+                </label>
+
+                <label class="block mt-4 text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">قیمت با تخفیف</span>
+                    <input name="discountedPrice" value="<%= plan.discountedPrice %>"
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                    <% if (discountedPriceError) { %>
+                        <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                            <%= discountedPriceError %>
+                        </p>
+                        <% } %>
+                </label>
+
+                <div class="mt-4 text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">وضعیت</span>
+                    <div class="mt-2">
+                        <label class="inline-flex items-center text-gray-600 dark:text-gray-400">
+                            <input name="status" value="active" type="radio"
+                                class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                <%=plan.status==='active' ? 'checked' : '' %> >
+                            <span class="ms-2">فعال</span>
+                        </label>
+                        <label class="inline-flex items-center ms-6 text-gray-600 dark:text-gray-400">
+                            <input name="status" value="disactive" type="radio"
+                                class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                <%=plan.status==='disactive' ? 'checked' : '' %> >
+                            <span class="ms-2">غیرفعال</span>
+                        </label>
+                    </div>
+
+                    <% if (statusError) { %>
+                        <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                            <%= statusError %>
+                        </p>
+                        <% } %>
+                </div>
+
+                <button type="submit"
+                    class="mt-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    ویرایش
+                </button>
             </div>
-
-            <% if (statusError) { %>
-                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
-                    <%= statusError %>
-                </p>
-            <% } %>
-        </div>
-
-        <button type="submit"
-            class="mt-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-            ویرایش
-        </button>
-    </div>
-</form>
+        </form>
 
 
-<%- include('../footer') -%>
+        <%- include('../footer') -%>

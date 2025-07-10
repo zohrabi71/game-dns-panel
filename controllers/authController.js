@@ -106,7 +106,7 @@ class AuthController extends Controller {
                 id: user._id
             }
 
-            jwt.sign(payload, config.get('jwt_private'), { expiresIn: '6h' }, (err, token) => {
+            jwt.sign(payload, config.get('jwt_private'), { expiresIn: '24h' }, (err, token) => {
                 if (err) throw err;
                 res
                     .cookie('access_token', token, {

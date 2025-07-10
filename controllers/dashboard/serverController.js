@@ -38,7 +38,7 @@ class serverController extends Controller {
             await server.save()
 
             req.flash('msg', 'سرور با موفقیت اضافه شد')
-            res.redirect('/dashboard/server/' + server.id + '/edit');
+            res.redirect('/dashboard/server/' + server._id + '/edit');
         } catch (err) {
             console.error(err.message);
             req.flash('errors', [

@@ -1,43 +1,46 @@
 <%- include('../header') -%>
 
-<h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">کاربر</h2>
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">کاربر</h2>
 
-<% 
-let serverError = '';
-let serverItemError = '';
-let passwordError = '';
-let confirmPasswordError = '';
-let creditError = '';
+    <% let serverError='' ; let serverSideError='' ; let passwordError='' ; let confirmPasswordError='' ; let
+        subscriptionExpirationError='' ; 
+        
+        errors.forEach(err=> {
+            if (err.param === 'serverSide') {
+            serverSideError = err.msg;
+            }
 
-errors.forEach(err => { 
-    if (err.param === 'serverError') {
-        serverError = err.msg;
-    } 
+            if (err.param === 'server') {
+            serverError = err.msg;
+            }
 
-    if (err.param === 'serverItem') {
-        serverItemError = err.msg;
-    } 
-    
-    if (err.param === 'password') {
-        passwordError = err.msg;
-    } 
+            if (err.param === 'password') {
+            passwordError = err.msg;
+            }
 
-    if (err.param === 'confirm-password') {
-        confirmPasswordError = err.msg;
-    } 
+            if (err.param === 'confirm-password') {
+            confirmPasswordError = err.msg;
+            }
 
-    if (err.param === 'credit') {
-        creditError = err.msg;
-    } 
-})
-%>
+            if (err.param === 'subscriptionExpiration') {
+            subscriptionExpirationError = err.msg;
+            }
+        })
+        %>
 
-<p class="mb-4 text-xs text-red-600 dark:text-red-400 mt-1">
-    <%= msg %>
-    <%= serverError %>
-</p>
+        <% if (msg.length) { %>
+            <p class="mb-4 text-xs text-green-700 dark:text-green-500 mt-1">
+                <%= msg %>
+            </p>
+        <% } %>
 
-<form action="/dashboard/user/<%= user.id  %>/edit?_method=PUT"  method="POST">
+        <% if (serverSideError.length) { %>
+            <p class="mb-4 text-xs text-red-600 dark:text-red-400 mt-1">
+                <%= serverSideError %>
+            </p>
+        <% } %>
+
+<form action="/dashboard/user/<%= user._id  %>/edit?_method=PUT" method="POST">
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <label class="block text-sm">
             <span class="text-gray-700 dark:text-gray-400">ایمیل</span>
@@ -52,8 +55,10 @@ errors.forEach(err => {
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 placeholder="****">
             <% if (passwordError) { %>
-                <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= passwordError %></p>
-            <% } %>
+                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                    <%= passwordError %>
+                </p>
+                <% } %>
         </label>
 
         <label class="block mt-4 text-sm">
@@ -61,8 +66,10 @@ errors.forEach(err => {
             <input name="confirm-password"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 placeholder="****">
-                <% if (confirmPasswordError) { %>
-                    <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= confirmPasswordError %></p>
+            <% if (confirmPasswordError) { %>
+                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                    <%= confirmPasswordError %>
+                </p>
                 <% } %>
         </label>
 
@@ -73,24 +80,29 @@ errors.forEach(err => {
             <select name="server"
                 class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                 <% for (const server of servers) { %>
-                    <option value="<%= server.id %>" <%= String(server.id) === String(user.server) ? 'selected' : '' %> ><%= server.title %></option>
-                <% } %>
+                    <option value="<%= server._id %>"
+                        <%=String(server._id)===String(user.server) ? 'selected' : '' %> ><%=
+                            server.title %>
+                    </option>
+                    <% } %>
             </select>
-            <% if (serverItemError) { %>
-                <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= serverItemError %></p>
-            <% } %>
+            <% if (serverError) { %>
+                <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                    <%= serverError %>
+                </p>
+                <% } %>
         </label>
 
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">
                 اعتبار
             </span>
-            <input name="credit" type="number" value="<%= user.credit %>"
+            <input name="subscriptionExpiration" type="number"
+                value="<%= user.subscriptionExpiration %>"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
         </label>
 
-        <button
-            type="submit"
+        <button type="submit"
             class="mt-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
             ویرایش
         </button>

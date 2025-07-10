@@ -1,7 +1,7 @@
 const { body } = require('express-validator');
 const Validator = require('./validators');
 
-class AuthValidator extends Validator {
+class UserValidator extends Validator {
     register() {
         return [
             body('email')
@@ -28,12 +28,12 @@ class AuthValidator extends Validator {
                 .optional()
                 .custom((value, { req }) => value === req.body.password)
                 .withMessage('تکرار پسورد با پسورد یکسان نیست.'),
-            body('credit')
+            body('subscriptionExpiration')
                 .optional()
-                .isInt({ min: 0 }).withMessage('Credit must be a positive integer'),
+                .isInt({ min: 0 }).withMessage('مدت اشتراک باید یک عدد صحیح مثبت باشد'),
             body('server')
                 .optional()
-                .isInt().withMessage('Server must be a valid string'),
+                .isString().withMessage('سرور باید یک رشته معتبر باشد'),
         ]
     }
 
@@ -47,8 +47,6 @@ class AuthValidator extends Validator {
                 .isLength({ min: 4, max: 20 })
         ]
     }
-
-
 }
 
-module.exports = new AuthValidator()
+module.exports = new UserValidator()

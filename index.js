@@ -7,7 +7,7 @@ require('./startup/error')()
 require('./startup/config')(app, express)
 
 app.use((req, res, next) => {
-   res.locals = { errors: req.flash("errors"), req };
+   res.locals = { errors: req.flash('errors'), req };
    next();
 })
 

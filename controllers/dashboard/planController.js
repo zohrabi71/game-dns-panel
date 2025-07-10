@@ -37,7 +37,7 @@ class planController extends Controller {
             await plan.save()
 
             req.flash('msg', 'سرور با موفقیت اضافه شد')
-            res.redirect('/dashboard/plan/' + plan.id + '/edit');
+            res.redirect('/dashboard/plan/' + plan._id + '/edit');
         } catch (err) {
             console.error(err.message);
             req.flash('errors', [

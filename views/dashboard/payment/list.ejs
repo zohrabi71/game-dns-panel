@@ -26,7 +26,7 @@
                             <tr class="text-gray-700 dark:text-gray-400">
                                 <td class="px-4 py-3">
                                     <p class="font-semibold text-sm">
-                                        <%= payment.user?.email || '—'  %>
+                                        <%= payment.user?.email || '—' %>
                                     </p>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
@@ -36,31 +36,21 @@
                                     <%= payment.amount %>
                                 </td>
                                 <td class="px-4 py-3 text-xs">
-                                    <% 
-                                    const statusOptions = {
-                                        pending: 'درحال پرداخت‌',
-                                        completed: 'پرداخت‌ موفق',
-                                        failed: 'پرداخت‌ ناموفق',
-                                        refunded: 'عودت داده شده'
-                                    } 
-                                    %>
-                                    <%= statusOptions[payment.status] %>
+                                    <% const statusOptions={ pending: 'درحال پرداخت‌' , completed: 'پرداخت‌ موفق' ,
+                                        failed: 'پرداخت‌ ناموفق' , refunded: 'عودت داده شده' } %>
+                                        <%= statusOptions[payment.status] %>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     <%= payment.updatedAt.toLocaleDateString('fa-IR') %>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     <%= new Date(payment.updatedAt).toLocaleTimeString('fa-IR', {
-                                        timeZone: 'Asia/Tehran',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        second: '2-digit',
-                                        hour12: false
-                                    }) %>
+                                        timeZone: 'Asia/Tehran' , hour: '2-digit' , minute: '2-digit' ,
+                                        second: '2-digit' , hour12: false }) %>
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center space-x-4 text-sm">
-                                        <a href="/dashboard/payment/<%= payment.id %>/edit"
+                                        <a href="/dashboard/payment/<%= payment._id %>/edit"
                                             class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                                             aria-label="Edit">
                                             <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -85,7 +75,7 @@
                 <span class="col-span-2"></span>
                 <!-- Pagination -->
                 <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                    <nav aria-label="Table navigation">
+                    <nav aria-label="Table navigation" dir="ltr">
                         <ul class="inline-flex items-center">
                             <li>
                                 <button

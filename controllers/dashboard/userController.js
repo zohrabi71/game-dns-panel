@@ -1,4 +1,5 @@
 const Controller = require('../controller');
+const formatRemainingTime = require('../../utils/formatRemainingTime');
 const bcrypt = require('bcryptjs');
 const { body, validationResult, Result } = require('express-validator');
 
@@ -15,7 +16,7 @@ class userController extends Controller {
 
             const servers = await this.Server.find({});
 
-            res.status(200).render('dashboard/user/edit', { servers, user, msg: '' });
+            res.status(200).render('dashboard/user/edit', { servers, user, msg: req.flash('msg') });
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server error');
@@ -24,7 +25,7 @@ class userController extends Controller {
 
     // Update user 
     async update(req, res) {
-        const { password, server, credit } = req.body;
+        const { password, server, subscriptionExpiration } = req.body;
         const userId = req.params.id;
         const errors = validationResult(req);
 
@@ -49,29 +50,37 @@ class userController extends Controller {
             // Update server if provided
             if (server) user.server = server;
 
-            // Update credit if provided
-            if (credit || credit === 0) user.credit = credit;
+            // Update subscriptionExpiration if provided
+            if (subscriptionExpiration || subscriptionExpiration === 0) user.subscriptionExpiration = subscriptionExpiration;
 
             // Save updated user
             await user.save();
 
             const servers = await this.Server.find({});
 
-            res.status(200).render('dashboard/user/edit', { msg: 'اطلاعات کاربر با موفقیت بروزرسانی شد.', user, servers });
+            res.status(200).render('dashboard/user/edit', { servers, user, msg: 'اطلاعات کاربر با موفقیت بروزرسانی شد.' });
         } catch (err) {
             console.error(err.message);
             req.flash('errors', {
-                param: 'server',
+                param: 'serverSide',
                 msg: 'خطا در ذخیره سازی'
             });
-            return res.redirect('dashboard/user/' + userId + '/edit');
+            return res.redirect('/dashboard/user/' + userId + '/edit');
         }
     }
 
     // Get all users
     async getAll(req, res) {
         try {
-            const users = await this.User.find({ admin: false }).select('-password')
+            let users = await this.User.find({ admin: false }).select('-password')
+            
+            users = users.map(user => {
+                const userDoc = user.toObject(); // Convert Mongoose document to plain object
+                return {
+                    ...userDoc,
+                    remainingTime: formatRemainingTime(userDoc.subscriptionExpiration) 
+                };
+            });
 
             res.status(200).render('dashboard/user/list', { users })
         } catch (err) {

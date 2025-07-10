@@ -41,17 +41,19 @@
                                         class="<%= (plan.discountedPrice) ? 'line-through' : '' %> px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                                         <%= plan.price %>
                                     </span>
-                                    <span
-                                        class="ms-1 px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        <%= plan.discountedPrice %>
-                                    </span>
+                                    <% if (plan.discountedPrice) { %>
+                                        <span
+                                            class="ms-1 px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                            <%= plan.discountedPrice %>
+                                        </span>
+                                        <% } %>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     <%= plan.status==='active' ? 'فعال' : 'غیرفعال' %>
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center space-x-4 text-sm">
-                                        <a href="/dashboard/plan/<%= plan.id %>/edit"
+                                        <a href="/dashboard/plan/<%= plan._id %>/edit"
                                             class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                                             aria-label="Edit">
                                             <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
@@ -62,7 +64,7 @@
                                             </svg>
                                         </a>
 
-                                        <form action="/dashboard/plan/<%= plan.id %>?_method=DELETE" method="POST"
+                                        <form action="/dashboard/plan/<%= plan._id %>?_method=DELETE" method="POST"
                                             class="inline">
                                             <button type="submit"
                                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
@@ -90,7 +92,7 @@
                 <span class="col-span-2"></span>
                 <!-- Pagination -->
                 <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                    <nav aria-label="Table navigation">
+                    <nav aria-label="Table navigation" dir="ltr">
                         <ul class="inline-flex items-center">
                             <li>
                                 <button

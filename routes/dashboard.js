@@ -5,7 +5,7 @@ const userController = require('./../controllers/dashboard/userController');
 const serverController = require('./../controllers/dashboard/serverController');
 const planController = require('./../controllers/dashboard/planController');
 const paymentController = require('../controllers/dashboard/paymentController');
-const AuthValidator = require('../validators/authValidator');
+const UserValidator = require('../validators/userValidator');
 const serverValidator = require('../validators/serverValidator');
 const planValidator = require('../validators/planValidator');
 const paymentValidator = require('../validators/paymentValidator');
@@ -47,7 +47,7 @@ router.put('/payment/:id/edit', [verifyToken, paymentValidator()], paymentContro
 // User
 router.get('/users', verifyToken, userController.getAll.bind(userController))
 router.get('/user/:id/edit', verifyToken, userController.get.bind(userController))
-router.put('/user/:id/edit', [verifyToken, AuthValidator.update()], userController.update.bind(userController))
+router.put('/user/:id/edit', [verifyToken, UserValidator.update()], userController.update.bind(userController))
 
 
 module.exports = router;

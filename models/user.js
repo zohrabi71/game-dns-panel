@@ -11,18 +11,22 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true, 
+        required: true,
         maxlength: 128
     },
     server: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Server',
     },
+    payCash: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Plan'
+    },
     admin: {
         type: Boolean,
         default: false
     },
-    credit: {
+    subscriptionExpiration: {
         type: Number,
         default: 0
     }
