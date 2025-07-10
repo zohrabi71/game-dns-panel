@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ثبت نام</title>
+    <!-- <link href="/assets/font/Irancell/font.css" rel="stylesheet" /> -->
+    <link href="/assets/font/Vazir/font.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/style.min.css" />
+    <script src="/assets/js/lib/alpine.min.js" defer></script>
+    <script src="/assets/js/init-alpine.js"></script>
+</head>
+
+<body>
+    <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+        <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+            <div class="flex flex-col overflow-y-auto md:flex-row">
+                <div class="h-32 md:h-auto md:w-1/2">
+                    <img aria-hidden="true" class="object-cover w-full h-full dark:hidden"
+                        src="/assets/img/create-account-office.jpeg" alt="Office" />
+                    <img aria-hidden="true" class="hidden object-cover w-full h-full dark:block"
+                        src="/assets/img/create-account-office-dark.jpeg" alt="Office" />
+                </div>
+
+                <% 
+                let serverError = '';
+                let recaptchaError = '';
+                let emailError = '';
+                let passwordError = '';
+                let confirmPasswordError = '';
+                let privacyError = '';
+
+                errors.forEach(err => { 
+                    if (err.param === 'server') {
+                        serverError = err.msg;
+                    } 
+                    
+                    if (err.param === 'recaptcha') {
+                        recaptchaError = err.msg;
+                    } 
+                    
+                    if (err.param === 'email') {
+                        emailError = err.msg;
+                    } 
+
+                    if (err.param === 'password') {
+                        passwordError = err.msg;
+                    } 
+
+                    if (err.param === 'confirm-password') {
+                        confirmPasswordError = err.msg;
+                    } 
+
+                    if (err.param === 'privacy') {
+                        privacyError = err.msg;
+                    } 
+                })
+                %>
+
+                <form class="flex items-center justify-center p-6 sm:p-12 md:w-1/2" action="/auth/register" method="POST">
+                    <div class="w-full">
+                        <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
+                            عضویت 
+                        </h1>
+                        <label class="block text-sm">
+                            <span class="text-gray-700 dark:text-gray-400">ایمیل</span>
+                            <input type="email" name="email"
+                                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                placeholder="example@gmail.com" />
+                                <% if (emailError) { %>
+                                    <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= emailError %></p>
+                                <% } %>
+                        </label>
+
+                        <label class="block mt-4 text-sm">
+                            <span class="text-gray-700 dark:text-gray-400">رمز</span>
+                            <input type="password" name="password"
+                                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                placeholder="***************" />
+                                <% if (passwordError) { %>
+                                    <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= passwordError %></p>
+                                <% } %>
+                        </label>
+                        <label class="block mt-4 text-sm">
+                            <span class="text-gray-700 dark:text-gray-400">
+                                تکرار رمز
+                            </span>
+                            <input type="password" name="confirm-password"
+                                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                placeholder="***************" />
+                                <% if (confirmPasswordError) { %>
+                                    <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= confirmPasswordError %></p>
+                                <% } %>
+                        </label>
+
+                        <div class="flex mt-6 text-sm">
+                            <label class="flex items-center dark:text-gray-400">
+                                <input type="checkbox" name="privacy"
+                                    class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" />
+                                <span class="ms-2">
+                                    من 
+                                    <span class="underline">شرایط و قوانین</span>
+                                    را می پذیرم.
+                                </span>
+                            </label>
+                        </div>
+                        <% if (privacyError) { %>
+                            <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= privacyError %></p>
+                        <% } %>
+
+                        <% if (recaptchaError) { %>
+                            <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= recaptchaError %></p>
+                        <% } %>
+
+                        <%- recaptcha %>
+
+                        <button
+                            class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                            type="submit">
+                            ثبت نام 
+                        </button>
+                        
+                        <% if (serverError) { %>
+                            <p class="text-xs text-red-600 dark:text-red-400 mt-1"><%= serverError %></p>
+                        <% } %>
+
+                        <p class="mt-4">
+                            <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+                                href="/auth/login">
+                                حساب کاربری دارید؟ وارد شوید
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

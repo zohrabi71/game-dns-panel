@@ -1,0 +1,43 @@
+<%- include('../header') -%>
+
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">شارژ حساب</h2>
+    <!-- <% let serverError='' ; let titleError='' ; let priceError='' ; let discountedPriceError='' ; let creditError='' ;
+    let statusError='' ; errors.forEach(err=> {
+    if (err.param === 'server') {
+    serverError = err.msg;
+    }
+
+    if (err.param === 'title') {
+    titleError = err.msg;
+    }
+
+    if (err.param === 'price') {
+    priceError = err.msg;
+    }
+
+    if (err.param === 'discountedPrice') {
+    discountedPriceError = err.msg;
+    }
+
+    if (err.param === 'credit') {
+    creditError = err.msg;
+    }
+
+    if (err.param === 'status') {
+    statusError = err.msg;
+    }
+    })
+    %> -->
+    <form action="/dashboard/pay" method="POST">
+        <select name="plan" id="">
+            <% for (const plan of plans) { %>
+            <option value="<%= plan.id %>"><%= plan.title %></option>
+            <% } %>
+        </select>
+        <button 
+            type="submit"
+            class="mt-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">پرداخت</button>
+    </form>
+
+
+    <%- include('../footer') -%>

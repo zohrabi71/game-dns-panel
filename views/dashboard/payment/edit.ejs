@@ -1,0 +1,57 @@
+<%- include('../header') -%>
+
+<h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">ویرایش پرداخت</h2>
+
+<% 
+let serverError=''; 
+let statusError=''; 
+
+errors.forEach(err=> {
+    if (err.param === 'server') {
+        serverError = err.msg;
+    }
+
+    if (err.param === 'status') {
+        statusError = err.msg;
+    }
+})
+%>
+
+<p class="mb-4 text-xs text-red-600 dark:text-red-400 mt-1">
+    <%= msg %>
+    <%= serverError %>
+</p>
+
+<form action="/dashboard/payment/<%= payment.id %>/edit?_method=PUT" method="POST">
+    <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+
+        <label class="block mt-4 text-sm">
+            <span class="text-gray-700 dark:text-gray-400">
+                وضعیت پرداخت
+            </span>
+            <select name="status" class="block w-full mt-2 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+                <option <%= payment.status === 'completed'  ? 'selected' : '' %> value="completed">پرداخت موفق</option>
+                <option <%= payment.status === 'pending'  ? 'selected' : '' %> value="pending">درحال پرداخت</option>
+                <option <%= payment.status === 'failed'  ? 'selected' : '' %> value="failed">پرداخت ناموفق</option>
+                <option <%= payment.status === 'refunded'  ? 'selected' : '' %> value="refunded">عودت داده شده</option>
+            </select>
+        </label>
+
+        <% if (statusError) { %>
+            <p class="text-xs text-red-600 dark:text-red-400 mt-1">
+                <%= statusError %>
+            </p>
+        <% } %>
+
+    </div>
+
+    <div>
+        <button type="submit"
+            class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+            ویرایش
+        </button>
+    </div>
+</form>
+
+
+<%- include('../footer') -%>
