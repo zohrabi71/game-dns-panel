@@ -2,9 +2,11 @@ const Controller = require("../controller");
 
 class dashboardController extends Controller {
     async dashboard(req, res) {
-        const user = req.user
-        const expired = this.calculateCredit(user.expired)
-        res.status(200).render('dashboard/dashboard', { user, expired })
+        let user = req.user
+        user.ip = req.ip
+        const plan = await this.Plan.findById(user.payCash);
+
+        res.status(200).render('dashboard/dashboard', { user, planCapacity: plan.capacity, msg: req.flash('msg') })
     }
 
     calculateCredit(expiredTime) {

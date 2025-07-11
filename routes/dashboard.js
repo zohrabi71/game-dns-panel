@@ -48,6 +48,7 @@ router.put('/payment/:id/edit', [verifyToken, paymentValidator()], paymentContro
 router.get('/users', verifyToken, userController.getAll.bind(userController))
 router.get('/user/:id/edit', verifyToken, userController.get.bind(userController))
 router.put('/user/:id/edit', [verifyToken, UserValidator.update()], userController.update.bind(userController))
+router.post('/user/ip', [verifyToken, UserValidator.ip()], userController.setIp.bind(userController))
 
 
 module.exports = router;

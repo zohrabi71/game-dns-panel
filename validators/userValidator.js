@@ -47,6 +47,25 @@ class UserValidator extends Validator {
                 .isLength({ min: 4, max: 20 })
         ]
     }
-}
 
+    ip() {
+        return [
+            body('ips')
+                .optional()
+                .isArray().withMessage('آدرس های آی پی باید یک آرایه باشد.')
+                .custom((ips) => {
+                    for (const ip of ips) {
+                        if (ip.length && !isValidIP(ip)) {
+                            throw new Error(`Invalid IP address: ${ip}`);
+                        }
+                    }
+                    return true; 
+                })
+        ]
+    }
+}
+const isValidIP = (ip) => {
+    const ipRegex = /^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$/;
+    return ipRegex.test(ip);
+};
 module.exports = new UserValidator()

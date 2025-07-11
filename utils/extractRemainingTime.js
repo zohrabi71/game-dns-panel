@@ -1,10 +1,6 @@
-function formatRemainingTime(timestamp) {
+function extractRemainingTime(timestamp) {
     const now = Date.now(); // Current time in milliseconds
     const remainingTime = timestamp - now; // Time remaining in milliseconds
-
-    if (remainingTime < 0) {
-        return "پایان یافته";
-    }
 
     const seconds = Math.floor(remainingTime / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -13,8 +9,11 @@ function formatRemainingTime(timestamp) {
 
     const remainingHours = hours % 24;
     const remainingMinutes = minutes % 60;
+    const remainingSeconds = seconds % 60;
 
-    return `${days}:${remainingHours}:${remainingMinutes} باقی مانده`;
+    return {
+        days, hours: remainingHours, minutes: remainingMinutes, seconds: remainingSeconds
+    }
 }
 
-module.exports = formatRemainingTime;
+module.exports = extractRemainingTime;

@@ -7,7 +7,7 @@ const planSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    credit: {
+    duration: {
         type: Number,
         required: true,
         min: 0
@@ -20,6 +20,12 @@ const planSchema = new mongoose.Schema({
     discountedPrice: {
         type: Number,
         min: 0
+    },
+    capacity: {
+        type: Number,
+        required: true,
+        min: 1,
+        default: 1
     },
     status: {
         type: String,

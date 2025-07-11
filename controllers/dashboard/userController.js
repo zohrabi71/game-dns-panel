@@ -1,14 +1,15 @@
 const Controller = require('../controller');
-const formatRemainingTime = require('../../utils/formatRemainingTime');
 const bcrypt = require('bcryptjs');
 const { body, validationResult, Result } = require('express-validator');
+const extractRemainingTime = require('../../utils/extractRemainingTime');
 
 class userController extends Controller {
     // Get user 
     async get(req, res) {
         try {
             const userId = req.params.id;
-            const user = await this.User.findById(userId);
+            let user = await this.User.findById(userId);
+            user.subscriptionRemaining = extractRemainingTime(user.subscriptionExpiration);
 
             if (!user) {
                 return res.status(404).json({ msg: 'User not found' });
@@ -25,7 +26,16 @@ class userController extends Controller {
 
     // Update user 
     async update(req, res) {
-        const { password, server, subscriptionExpiration } = req.body;
+        const {
+            password,
+            server,
+            'subscriptionRemaining.days': days,
+            'subscriptionRemaining.hours': hours,
+            'subscriptionRemaining.minutes': minutes,
+            'subscriptionRemaining.seconds': seconds,
+        } = req.body;
+
+
         const userId = req.params.id;
         const errors = validationResult(req);
 
@@ -50,15 +60,21 @@ class userController extends Controller {
             // Update server if provided
             if (server) user.server = server;
 
-            // Update subscriptionExpiration if provided
-            if (subscriptionExpiration || subscriptionExpiration === 0) user.subscriptionExpiration = subscriptionExpiration;
+            // Calculate the expiration date
+            const currentTime = new Date();
+            const expirationTime = new Date(currentTime.getTime() +
+                (parseInt(days) * 24 * 60 * 60 * 1000) +
+                (parseInt(hours) * 60 * 60 * 1000) +
+                (parseInt(minutes) * 60 * 1000) +
+                (parseInt(seconds) * 1000));
+
+            if (expirationTime) user.subscriptionExpiration = expirationTime
 
             // Save updated user
             await user.save();
 
-            const servers = await this.Server.find({});
-
-            res.status(200).render('dashboard/user/edit', { servers, user, msg: 'اطلاعات کاربر با موفقیت بروزرسانی شد.' });
+            req.flash('msg', 'اطلاعات کاربر با موفقیت بروزرسانی شد.');
+            res.redirect('/dashboard/user/' + userId + '/edit');
         } catch (err) {
             console.error(err.message);
             req.flash('errors', {
@@ -73,12 +89,12 @@ class userController extends Controller {
     async getAll(req, res) {
         try {
             let users = await this.User.find({ admin: false }).select('-password')
-            
+
             users = users.map(user => {
                 const userDoc = user.toObject(); // Convert Mongoose document to plain object
                 return {
                     ...userDoc,
-                    remainingTime: formatRemainingTime(userDoc.subscriptionExpiration) 
+                    remainingTime: extractRemainingTime(userDoc.subscriptionExpiration)
                 };
             });
 
@@ -89,6 +105,36 @@ class userController extends Controller {
                 msg: 'خطا در بازیابی اطلاعات',
                 err: err.message
             })
+        }
+    }
+
+    // Set user IP
+    async setIp(req, res) {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            req.flash('errors', errors.array());
+            return res.redirect('/dashboard');
+        }
+
+        const { ips, id } = req.body;
+
+        try {
+            const updatedUser = await this.User.findByIdAndUpdate(
+                id,
+                { ips },
+                { new: true, runValidators: true }
+            );
+
+            if (!updatedUser) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            req.flash('msg', 'آی پی با موفقیت ثبت شد.')
+
+            res.redirect('/dashboard');
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
     }
 }

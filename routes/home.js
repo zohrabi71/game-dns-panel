@@ -6,8 +6,6 @@ router.use('/auth', require('./auth'));
 
 router.use('/dashboard', require('./dashboard'))
 
-router.use('/api', require('./api'))
-
 router.use(error)
 
 router.all('*', async (req, res, next) => {

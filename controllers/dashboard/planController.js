@@ -11,16 +11,16 @@ class planController extends Controller {
     }
 
     async set(req, res, next) {
-        const { title, credit, price, discountedPrice, status } = req.body
+        const { title, duration, price, discountedPrice, capacity, status } = req.body
         const errors = validationResult(req);
-
+        
         if (!errors.isEmpty()) {
             req.flash('errors', errors.array());
             return res.redirect('/dashboard/plan/create');
         }
 
         try {
-            let plan = await this.Plan.findOne({ credit })
+            let plan = await this.Plan.findOne({ duration, capacity })
 
             if (plan) {
                 req.flash('errors', [
@@ -32,11 +32,11 @@ class planController extends Controller {
                 return res.redirect('/dashboard/plan/create');
             }
 
-            plan = new this.Plan({ title, credit, price, discountedPrice, status })
+            plan = new this.Plan({ title, duration, price, discountedPrice, status })
 
             await plan.save()
 
-            req.flash('msg', 'سرور با موفقیت اضافه شد')
+            req.flash('msg', 'پلن با موفقیت اضافه شد')
             res.redirect('/dashboard/plan/' + plan._id + '/edit');
         } catch (err) {
             console.error(err.message);
@@ -72,7 +72,7 @@ class planController extends Controller {
 
     // Update plan 
     async update(req, res) {
-        const { title, credit, price, discountedPrice, status } = req.body;
+        const { title, duration, price, discountedPrice, capacity, status } = req.body;
         const planId = req.params.id;
         const errors = validationResult(req);
 
@@ -91,7 +91,8 @@ class planController extends Controller {
             if (title) plan.title = title;
             if (price) plan.price = price;
             if (discountedPrice) plan.discountedPrice = discountedPrice;
-            if (credit) plan.credit = credit;
+            if (duration) plan.duration = duration;
+            if (capacity) plan.capacity = capacity;
             if (status) plan.status = status;
 
             // Save updated plan

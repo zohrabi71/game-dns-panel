@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     subscriptionExpiration: {
         type: Number,
         default: 0
+    },
+    ips: {
+        type: [String],
+        default: []
     }
 }, { timestamps: true })
 

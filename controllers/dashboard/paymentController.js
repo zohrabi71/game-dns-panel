@@ -84,7 +84,7 @@ class paymentController extends Controller {
                 const plan = await this.Plan.findById(payment.plan)
                 const now = new Date().getTime()
 
-                user.subscriptionExpiration = now + (1000 * 60 * 60 * 24 * plan.credit)
+                user.subscriptionExpiration = now + (1000 * 60 * 60 * 24 * plan.duration)
                 user.payCash = plan._id
                 payment.status = 'completed'
 

@@ -1,57 +1,61 @@
 <%- include('../header') -%>
 
-    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">کاربر</h2>
+<h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">کاربر</h2>
 
-    <% let serverError='' ; let serverSideError='' ; let passwordError='' ; let confirmPasswordError='' ; let
-        subscriptionExpirationError='' ; 
-        
-        errors.forEach(err=> {
-            if (err.param === 'serverSide') {
-            serverSideError = err.msg;
-            }
+<% 
+let serverError=''; 
+let serverSideError=''; 
+let passwordError=''; 
+let confirmPasswordError=''; 
+let subscriptionExpirationError=''; 
 
-            if (err.param === 'server') {
-            serverError = err.msg;
-            }
+errors.forEach(err=> {
+    if (err.param === 'serverSide') {
+    serverSideError = err.msg;
+    }
 
-            if (err.param === 'password') {
-            passwordError = err.msg;
-            }
+    if (err.param === 'server') {
+    serverError = err.msg;
+    }
 
-            if (err.param === 'confirm-password') {
-            confirmPasswordError = err.msg;
-            }
+    if (err.param === 'password') {
+    passwordError = err.msg;
+    }
 
-            if (err.param === 'subscriptionExpiration') {
-            subscriptionExpirationError = err.msg;
-            }
-        })
-        %>
+    if (err.param === 'confirm-password') {
+    confirmPasswordError = err.msg;
+    }
 
-        <% if (msg.length) { %>
-            <p class="mb-4 text-xs text-green-700 dark:text-green-500 mt-1">
-                <%= msg %>
-            </p>
-        <% } %>
+    if (err.param === 'subscriptionExpiration') {
+    subscriptionExpirationError = err.msg;
+    }
+})
+%>
 
-        <% if (serverSideError.length) { %>
-            <p class="mb-4 text-xs text-red-600 dark:text-red-400 mt-1">
-                <%= serverSideError %>
-            </p>
-        <% } %>
+<% if (msg.length) { %>
+    <p class="mb-4 text-xs text-green-700 dark:text-green-500 mt-1">
+        <%= msg %>
+    </p>
+<% } %>
+
+<% if (serverSideError.length) { %>
+    <p class="mb-4 text-xs text-red-600 dark:text-red-400 mt-1">
+        <%= serverSideError %>
+    </p>
+<% } %>
 
 <form action="/dashboard/user/<%= user._id  %>/edit?_method=PUT" method="POST">
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <label class="block text-sm">
             <span class="text-gray-700 dark:text-gray-400">ایمیل</span>
-            <input
+            <input autocomplete="off"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 value="<%= user.email %>" disabled>
         </label>
 
         <label class="mt-4 block text-sm">
             <span class="text-gray-700 dark:text-gray-400">رمز</span>
-            <input name="password"
+            <input autocomplete="off" name="password"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 placeholder="****">
             <% if (passwordError) { %>
@@ -63,7 +67,7 @@
 
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">تکرار رمز</span>
-            <input name="confirm-password"
+            <input autocomplete="off" name="confirm-password"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 placeholder="****">
             <% if (confirmPasswordError) { %>
@@ -95,11 +99,38 @@
 
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">
-                اعتبار
+                اشتراک باقی مانده
             </span>
-            <input name="subscriptionExpiration" type="number"
-                value="<%= user.subscriptionExpiration %>"
-                class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+
+            <div class="flex flex-wrap gap-4 mt-1" >
+                <div>
+                    <label class="w-full block text-gray-700 dark:text-gray-400">روز</label>
+                    <input autocomplete="off" name="subscriptionRemaining.days"
+                        type="number" value="<%= user.subscriptionRemaining.days %>"
+                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                </div>
+
+                <div>
+                    <label class="w-full block text-gray-700 dark:text-gray-400">ساعت</label>
+                    <input autocomplete="off" name="subscriptionRemaining.hours"
+                        type="number" value="<%= user.subscriptionRemaining.hours %>"
+                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                </div>
+
+                <div>
+                    <label class="w-full block text-gray-700 dark:text-gray-400">دقیقه</label>
+                    <input autocomplete="off" name="subscriptionRemaining.minutes"
+                        type="number" value="<%= user.subscriptionRemaining.minutes %>"
+                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                </div>
+
+                <div>
+                    <label class="w-full block text-gray-700 dark:text-gray-400">ثانیه</label>
+                    <input autocomplete="off" name="subscriptionRemaining.seconds"
+                        type="number" value="<%= user.subscriptionRemaining.seconds %>"
+                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+                </div>
+            </div>
         </label>
 
         <button type="submit"
