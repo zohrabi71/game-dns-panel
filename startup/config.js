@@ -13,7 +13,7 @@ module.exports = function (app, express) {
     app.use(methodOverride('_method'))
 
     app.use(session({
-        secret: 'g14g5h3h3hdd5bdbdb55',
+        secret: 'g14g5h3h3huil8bdb55',
         resave: false,
         saveUninitialized: false,
         cookie: { maxAge: 3 * 60 * 60 * 1000 }

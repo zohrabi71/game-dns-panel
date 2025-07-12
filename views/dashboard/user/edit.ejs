@@ -100,38 +100,38 @@ errors.forEach(err=> {
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">
                 اشتراک باقی مانده
-            </span>
-
-            <div class="flex flex-wrap gap-4 mt-1" >
-                <div>
-                    <label class="w-full block text-gray-700 dark:text-gray-400">روز</label>
-                    <input autocomplete="off" name="subscriptionRemaining.days"
-                        type="number" value="<%= user.subscriptionRemaining.days %>"
-                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                </div>
-
-                <div>
-                    <label class="w-full block text-gray-700 dark:text-gray-400">ساعت</label>
-                    <input autocomplete="off" name="subscriptionRemaining.hours"
-                        type="number" value="<%= user.subscriptionRemaining.hours %>"
-                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                </div>
-
-                <div>
-                    <label class="w-full block text-gray-700 dark:text-gray-400">دقیقه</label>
-                    <input autocomplete="off" name="subscriptionRemaining.minutes"
-                        type="number" value="<%= user.subscriptionRemaining.minutes %>"
-                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                </div>
-
-                <div>
-                    <label class="w-full block text-gray-700 dark:text-gray-400">ثانیه</label>
-                    <input autocomplete="off" name="subscriptionRemaining.seconds"
-                        type="number" value="<%= user.subscriptionRemaining.seconds %>"
-                        class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                </div>
-            </div>
+            </span>    
         </label>
+
+        <div class="flex flex-wrap gap-4 mt-1" >
+            <label>
+                <span class="w-full block text-gray-700 dark:text-gray-400">روز</span>
+                <input autocomplete="off" name="subscriptionRemaining[days]"
+                    type="number" value="<%= user.subscriptionRemaining.days %>"
+                    class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+            </label>
+
+            <label>
+                <span class="w-full block text-gray-700 dark:text-gray-400">ساعت</span>
+                <input autocomplete="off" name="subscriptionRemaining[hours]"
+                    type="number" value="<%= user.subscriptionRemaining.hours %>"
+                    class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+            </label>
+
+            <label>
+                <span class="w-full block text-gray-700 dark:text-gray-400">دقیقه</span>
+                <input autocomplete="off" name="subscriptionRemaining[minutes]"
+                    type="number" value="<%= user.subscriptionRemaining.minutes %>"
+                    class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+            </label>
+
+            <label>
+                <span class="w-full block text-gray-700 dark:text-gray-400">ثانیه</span>
+                <input autocomplete="off" name="subscriptionRemaining[seconds]"
+                    type="number" value="<%= user.subscriptionRemaining.seconds %>"
+                    class="mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
+            </label>
+        </div>
 
         <button type="submit"
             class="mt-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">

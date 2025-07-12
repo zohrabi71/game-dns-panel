@@ -57,7 +57,7 @@ class AuthController extends Controller {
                 if (err) throw err;
                 res
                     .cookie('access_token', token, {
-                        maxAge: 6 * 60 * 60 * 1000,
+                        maxAge: 24 * 60 * 60 * 1000,
                         httpOnly: true,
                         sameSite: 'none',
                         secure: process.env.NODE_ENV === 'production',
@@ -110,7 +110,7 @@ class AuthController extends Controller {
                 if (err) throw err;
                 res
                     .cookie('access_token', token, {
-                        maxAge: 6 * 60 * 60 * 1000,
+                        maxAge: 24 * 60 * 60 * 1000,
                         httpOnly: true,
                         sameSite: 'none',
                         secure: process.env.NODE_ENV === 'production',

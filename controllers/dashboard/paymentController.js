@@ -52,7 +52,7 @@ class paymentController extends Controller {
         } catch (err) {
             console.log(err.message)
 
-            req.flash('errors', { param: 'server', msg: 'خطایی رخ داده!'});
+            req.flash('errors', { param: 'server', msg: 'خطایی رخ داده!' });
 
             return res.redirect('/dashboard/payment')
         }
@@ -60,7 +60,6 @@ class paymentController extends Controller {
 
     async payCallback(req, res, next) {
         try {
-            console.log(1)
             // if (req.query.Status && req.query.Status !== 'OK') {
             //     return res.render('payment/paycallback', { msg: 'تراکنش ناموفق' })
             // }
@@ -82,10 +81,13 @@ class paymentController extends Controller {
             if (response.data.Status !== 100) {
                 const user = await this.User.findById(payment.user)
                 const plan = await this.Plan.findById(payment.plan)
-                const now = new Date().getTime()
 
-                user.subscriptionExpiration = now + (1000 * 60 * 60 * 24 * plan.duration)
                 user.payCash = plan._id
+
+                user.subscription.start = new Date();
+                user.subscription.end = new Date(Date.now() + plan.duration * 24 * 60 * 60 * 1000);
+                user.subscription.status = 'active';
+
                 payment.status = 'completed'
 
                 await user.save()

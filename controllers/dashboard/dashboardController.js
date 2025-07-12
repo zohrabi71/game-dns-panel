@@ -1,12 +1,25 @@
 const Controller = require("../controller");
+const calculateRemainingTime = require('../../utils/calculateRemainingTime');
 
 class dashboardController extends Controller {
     async dashboard(req, res) {
         let user = req.user
-        user.ip = req.ip
-        const plan = await this.Plan.findById(user.payCash);
+        let plan = null;
+        const isAdmin = user.admin
 
-        res.status(200).render('dashboard/dashboard', { user, planCapacity: plan.capacity, msg: req.flash('msg') })
+        // Customer
+        if (!isAdmin) {
+            user.ip = req.ip
+            user.remainingSubscription = calculateRemainingTime(user.subscription.end)
+            
+            if (user.payCash) {
+                plan = await this.Plan.findById(user.payCash);
+            }
+        }
+        
+       
+
+        res.status(200).render('dashboard/dashboard', { user, plan, msg: req.flash('msg') })
     }
 
     calculateCredit(expiredTime) {

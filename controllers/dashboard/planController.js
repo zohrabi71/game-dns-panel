@@ -147,6 +147,17 @@ class planController extends Controller {
         }
     }
 
+    async checkSubscriptions() {
+        const users = await this.User.find(); // تمام کاربران را بگیرید
+    
+        for (const user of users) {
+            if (user.subscription.end && new Date() > user.subscription.end) {
+                user.subscription.status = 'disactive'; // وضعیت را به disactive تغییر دهید
+                await user.save(); // تغییرات را ذخیره کنید
+            }
+        }
+    }
+
 }
 
 module.exports = new planController()

@@ -1,7 +1,7 @@
 const Controller = require('../controller');
 const bcrypt = require('bcryptjs');
 const { body, validationResult, Result } = require('express-validator');
-const extractRemainingTime = require('../../utils/extractRemainingTime');
+const calculateRemainingTime = require('../../utils/calculateRemainingTime');
 
 class userController extends Controller {
     // Get user 
@@ -9,7 +9,7 @@ class userController extends Controller {
         try {
             const userId = req.params.id;
             let user = await this.User.findById(userId);
-            user.subscriptionRemaining = extractRemainingTime(user.subscriptionExpiration);
+            user.subscriptionRemaining = calculateRemainingTime(user.subscription.end);
 
             if (!user) {
                 return res.status(404).json({ msg: 'User not found' });
@@ -26,16 +26,7 @@ class userController extends Controller {
 
     // Update user 
     async update(req, res) {
-        const {
-            password,
-            server,
-            'subscriptionRemaining.days': days,
-            'subscriptionRemaining.hours': hours,
-            'subscriptionRemaining.minutes': minutes,
-            'subscriptionRemaining.seconds': seconds,
-        } = req.body;
-
-
+        const { password, server, subscriptionRemaining } = req.body;
         const userId = req.params.id;
         const errors = validationResult(req);
 
@@ -62,13 +53,26 @@ class userController extends Controller {
 
             // Calculate the expiration date
             const currentTime = new Date();
-            const expirationTime = new Date(currentTime.getTime() +
-                (parseInt(days) * 24 * 60 * 60 * 1000) +
-                (parseInt(hours) * 60 * 60 * 1000) +
-                (parseInt(minutes) * 60 * 1000) +
-                (parseInt(seconds) * 1000));
+            const days = parseInt(subscriptionRemaining.days) || 0;
+            const hours = parseInt(subscriptionRemaining.hours) || 0;
+            const minutes = parseInt(subscriptionRemaining.minutes) || 0;
+            const seconds = parseInt(subscriptionRemaining.seconds) || 0;
 
-            if (expirationTime) user.subscriptionExpiration = expirationTime
+            // Calculate total milliseconds to add to the current time
+            const totalMilliseconds =
+                (days * 24 * 60 * 60 * 1000) +
+                (hours * 60 * 60 * 1000) +
+                (minutes * 60 * 1000) +
+                (seconds * 1000);
+
+            // Set the new subscription end date
+            if (totalMilliseconds === 0) {
+                user.subscription.status = 'disactive';
+                user.subscription.end = null;
+            } else {
+                user.subscription.end = new Date(currentTime.getTime() + totalMilliseconds);
+                user.subscription.status = 'active';
+            }
 
             // Save updated user
             await user.save();
@@ -94,7 +98,7 @@ class userController extends Controller {
                 const userDoc = user.toObject(); // Convert Mongoose document to plain object
                 return {
                     ...userDoc,
-                    remainingTime: extractRemainingTime(userDoc.subscriptionExpiration)
+                    remainingSubscription: calculateRemainingTime(userDoc.subscription.end)
                 };
             });
 

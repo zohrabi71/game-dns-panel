@@ -26,9 +26,18 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    subscriptionExpiration: {
-        type: Number,
-        default: 0
+    subscription: {
+        start: {
+            type: Date
+        },
+        end: {
+            type: Date
+        },
+        status: {
+            type: String,
+            enum: ['active', 'disactive'],
+            default: 'disactive'
+        },
     },
     ips: {
         type: [String],

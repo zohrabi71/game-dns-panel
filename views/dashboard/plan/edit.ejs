@@ -58,7 +58,7 @@ errors.forEach(err=> {
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <label class="block text-sm">
             <span class="text-gray-700 dark:text-gray-400">عنوان</span>
-            <input name="title" value="<%= plan.title %>"
+            <input autocomplete="off" name="title" value="<%= plan.title %>"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
             <% if (titleError) { %>
                 <p class="text-xs text-red-600 dark:text-red-400 mt-1">
@@ -69,7 +69,7 @@ errors.forEach(err=> {
 
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">مدت</span>
-            <input name="duration" type="number" value="<%= plan.duration %>"
+            <input autocomplete="off" name="duration" type="number" value="<%= plan.duration %>"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
             <% if (durationError) { %>
                 <p class="text-xs text-red-600 dark:text-red-400 mt-1">
@@ -80,7 +80,7 @@ errors.forEach(err=> {
 
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">ظرفیت</span>
-            <input name="capacity" type="number"
+            <input autocomplete="off" name="capacity" type="number" value="<%= plan.capacity %>"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
             <% if (capacityError) { %>
                 <p class="text-xs text-red-600 dark:text-red-400 mt-1">
@@ -91,7 +91,7 @@ errors.forEach(err=> {
 
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">قیمت</span>
-            <input name="price" value="<%= plan.price %>"
+            <input autocomplete="off" name="price" value="<%= plan.price %>"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
             <% if (priceError) { %>
                 <p class="text-xs text-red-600 dark:text-red-400 mt-1">
@@ -102,7 +102,7 @@ errors.forEach(err=> {
 
         <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">قیمت با تخفیف</span>
-            <input name="discountedPrice" value="<%= plan.discountedPrice %>"
+            <input autocomplete="off" name="discountedPrice" value="<%= plan.discountedPrice %>"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
             <% if (discountedPriceError) { %>
                 <p class="text-xs text-red-600 dark:text-red-400 mt-1">
@@ -115,13 +115,13 @@ errors.forEach(err=> {
             <span class="text-gray-700 dark:text-gray-400">وضعیت</span>
             <div class="mt-2">
                 <label class="inline-flex items-center text-gray-600 dark:text-gray-400">
-                    <input name="status" value="active" type="radio"
+                    <input autocomplete="off" name="status" value="active" type="radio"
                         class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         <%=plan.status==='active' ? 'checked' : '' %> >
                     <span class="ms-2">فعال</span>
                 </label>
                 <label class="inline-flex items-center ms-6 text-gray-600 dark:text-gray-400">
-                    <input name="status" value="disactive" type="radio"
+                    <input autocomplete="off" name="status" value="disactive" type="radio"
                         class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         <%=plan.status==='disactive' ? 'checked' : '' %> >
                     <span class="ms-2">غیرفعال</span>
